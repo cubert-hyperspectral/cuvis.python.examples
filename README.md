@@ -12,6 +12,11 @@ Next, you need to install the Cuvis C SDK (see https://cloud.cubert-gmbh.de/inde
 Then use CMake (see https://cmake.org/download/) to configure and generate the Visual Studio project. You can configure either base directory (including all directoreis) or a single example using it's respective directory.
 CMake will require you to locate the Cuvis C SDK (this should be found automatically, if the Cuvis C SDK is properly installed. 
 
+As an alternative, instead of building the Python wrapper by hand, you can install it using
+```
+pip install -r requirements.txt
+```
+
 ## The examples
 
 ### 01_loadMeasurement
