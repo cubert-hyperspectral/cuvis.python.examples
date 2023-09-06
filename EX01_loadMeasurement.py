@@ -47,6 +47,8 @@ def run_example_loadMeasurement(
     
     if isinstance(mesu.measurement_flags, cuvis.MeasurementFlags):
         print(f"Flags: {mesu.measurement_flags}")
+        for v in cuvis.MeasurementFlags.supremum():
+            print(f'{v}: {v in mesu.measurement_flags}')
 
     assert mesu.processing_mode == cuvis.ProcessingMode.Raw, \
         "This example requires Raw mode!"
