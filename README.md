@@ -1,21 +1,17 @@
 # Cuvis Python Examples
 
-## Building
-To the the exampels running, first clone this git repository and initialize it's submodule
+## Running the examples
+To the the exampels running, first clone this git repository.
 
-```
-git submodule update --init --recursive
-```
+Then you can simply install the required dependencies using pip
 
-Next, you need to install the Cuvis C SDK (see https://cloud.cubert-gmbh.de/index.php/s/kKVtx0x2fmYqVgx). For running the examples, you'd probably like to use sample data (provided here: https://cloud.cubert-gmbh.de/index.php/s/3oECVGWpC1NpNqC)
-
-Then use CMake (see https://cmake.org/download/) to configure and generate the Visual Studio project. You can configure either base directory (including all directoreis) or a single example using it's respective directory.
-CMake will require you to locate the Cuvis C SDK (this should be found automatically, if the Cuvis C SDK is properly installed. 
-
-As an alternative, instead of building the Python wrapper by hand, you can install it using
 ```
 pip install -r requirements.txt
 ```
+
+Alternatively take a look on how to install the python wrapper manually [here](https://github.com/cubert-hyperspectral/cuvis.python).
+
+Next, you need to install the Cuvis C SDK (see [here](https://cloud.cubert-gmbh.de/index.php/s/kKVtx0x2fmYqVgx)). For running the examples, you'd probably like to use sample data (provided [here](https://cloud.cubert-gmbh.de/index.php/s/3oECVGWpC1NpNqC))
 
 ## The examples
 
