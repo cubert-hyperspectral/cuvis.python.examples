@@ -21,13 +21,13 @@ elif platform.system() == "Linux":
         os.path.join(lib_dir, "sample_data", "set_examples"))
     plugin_dir = os.path.normpath(os.path.join(lib_dir, "sdk",
                                                "sample_data", "set_examples",
-                                               "userplugin"))
+                                               "plugin"))
 
 # default images
 loc_file = os.path.join(data_dir,
-                        "set0_lab",
-                        "x20p_calib_color.cu3s")
-loc_plugin = os.path.join(plugin_dir, "cai.xml")
+                        "set0_single",
+                        "single.cu3s")
+loc_plugin = os.path.join(plugin_dir,"ref", "cai.xml")
 
 # default settings
 loc_settings = os.path.join(data_dir, "settings")
