@@ -1,2 +1,2 @@
-cuvis > 3.2.0
+cuvis
 matplotlib
