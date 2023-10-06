@@ -50,9 +50,6 @@ def run_example_loadMeasurement(
         for v in cuvis.MeasurementFlags.supremum():
             print(f'{v}: {v in mesu.measurement_flags}')
 
-    assert mesu.processing_mode == cuvis.ProcessingMode.Raw, \
-        "This example requires Raw mode!"
-
     cube = mesu.data.get("cube", None)
     if cube is None:
         raise Exception("Cube not found")
