@@ -29,7 +29,7 @@ loc_settings = os.path.join(data_dir, "settings")
 loc_output = os.path.join(os.getcwd(), "EX05_images")
 
 # parameters
-loc_exptime = 100
+loc_exptime = 100 #in ms
 loc_nimgs = 10
 
 
