@@ -86,7 +86,7 @@ if __name__ == "__main__":
     if measurementLoc.strip().lower() in ["", "default"]:
         measurementLoc = loc_file
 
-    distance = input("New distance [mm] (default: {}): ".format(loc_distance))
+    distance = input("New distance in mm (default: {}): ".format(loc_distance))
     if distance.strip().lower() in ["", "default"]:
         distance = loc_distance
     distance = int(distance)
