@@ -100,7 +100,7 @@ if __name__ == "__main__":
         recDir = loc_output
 
     exposure = input(
-        "Exposure/Integration time [ms] (default: {}): ".format(loc_exptime))
+        "Exposure/Integration time in ms (default: {}): ".format(loc_exptime))
     if exposure.strip().lower() in ["", "default"]:
         exposure = loc_exptime
     exposure = int(exposure)
