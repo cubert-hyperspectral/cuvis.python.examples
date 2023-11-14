@@ -30,7 +30,7 @@ loc_settings = os.path.join(data_dir, "settings")
 loc_output = os.path.join(os.getcwd(), "EX06_video")
 
 # parameters
-loc_exptime = 100
+loc_exptime = 100 #in ms
 loc_autoexp = False
 loc_fps = 2
 
@@ -111,7 +111,7 @@ def run_example_recordVideo(userSettingsDir=loc_settings,
             else:
                 time.sleep(0.001)
 
-        workerContainer = worker.get_next_result(1000)
+        workerContainer = worker.get_next_result(1000) #in ms
         if workerContainer.mesu.data is not None:
             print("current handle index: {}".format(
                 workerContainer.mesu.session_info.sequence_number))
@@ -147,7 +147,7 @@ if __name__ == "__main__":
         recDir = loc_output
 
     exposure = input(
-        "Exposure/Integration time [ms] (default: {}): ".format(loc_exptime))
+        "Exposure/Integration time in ms (default: {}): ".format(loc_exptime))
     if exposure.strip().lower() in ["", "default"]:
         exposure = loc_exptime
     exposure = int(exposure)

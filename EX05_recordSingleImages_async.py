@@ -31,7 +31,7 @@ loc_settings = os.path.join(data_dir, "settings")
 loc_output = os.path.join(os.getcwd(), "EX05_images")
 
 # parameters
-loc_exptime = 100
+loc_exptime = 100 #in msw
 loc_nimgs = 10
 
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
         recDir = loc_output
 
     exposure = input(
-        "Exposure/Integration time [ms] (default: {}): ".format(loc_exptime))
+        "Exposure/Integration time in ms (default: {}): ".format(loc_exptime))
     if exposure.strip().lower() in ["", "default"]:
         exposure = loc_exptime
     exposure = int(exposure)
