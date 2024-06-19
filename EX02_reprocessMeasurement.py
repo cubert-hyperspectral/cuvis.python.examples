@@ -44,8 +44,8 @@ def run_example_reprocessMeasurement(
         distanceLoc=loc_distance,
         outDir=loc_output):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.init(userSettingsDir)
+    cuvis.set_log_level("info")
 
     print("loading measurement file...")
     sessionM = cuvis.SessionFile(measurementLoc)
@@ -107,9 +107,8 @@ def run_example_reprocessMeasurement(
         else:
             print("Cannot process to {} mode!".format(mode))
 
+    cuvis.shutdown()
     print("finished.")
-
-    pass
 
 
 if __name__ == "__main__":

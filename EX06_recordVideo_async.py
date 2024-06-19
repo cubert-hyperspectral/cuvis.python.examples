@@ -52,9 +52,9 @@ async def run_example_recordVideo(userSettingsDir=loc_settings,
                             autoExp=loc_autoexp,
                             fps=loc_fps):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
-
+    cuvis.init(userSettingsDir)
+    cuvis.set_log_level("info")
+    
     print("loading calibration (factory)...")
     calibration = cuvis.Calibration(factoryDir)
 
@@ -122,9 +122,9 @@ async def run_example_recordVideo(userSettingsDir=loc_settings,
 
     print("acquisition stopped...")
     await acquisitionContext.set_continuous_async(False)
+    
+    cuvis.shutdown()
     print("finished.")
-
-    pass
 
 
 if __name__ == "__main__":

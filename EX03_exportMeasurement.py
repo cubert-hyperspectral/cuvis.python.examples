@@ -41,8 +41,8 @@ def run_example_exportMeasurement(userSettingsDir=loc_settings,
                                   pluginLoc=loc_plugin,
                                   exportDir=loc_output):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.init(userSettingsDir)
+    cuvis.set_log_level("info")
 
     print("loading session file...")
     session = cuvis.SessionFile(measurementLoc)
@@ -84,7 +84,8 @@ def run_example_exportMeasurement(userSettingsDir=loc_settings,
     viewExporter = cuvis.ViewExporter(view_export_settings)
     viewExporter.apply(mesu)
 
-    pass
+    cuvis.shutdown()
+    print("finished.")
 
 
 if __name__ == "__main__":
