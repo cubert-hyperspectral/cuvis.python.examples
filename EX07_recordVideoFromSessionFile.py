@@ -42,8 +42,8 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
                                            autoExp=loc_autoexp,
                                            fps=loc_fps):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.init(userSettingsDir)
+    cuvis.set_log_level("info")
 
     print("loading session file ...")
     session = cuvis.SessionFile(measurementLoc)
@@ -126,9 +126,9 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
 
     print("acquisition stopped...")
     acquisitionContext.set_continuous(False)
+    
+    cuvis.shutdown()
     print("finished.")
-
-    pass
 
 
 if __name__ == "__main__":

@@ -33,8 +33,8 @@ def run_example_changeDistance(userSettingsDir=loc_settings,
                                distance=loc_distance,
                                exportDir=loc_output):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.init(userSettingsDir)
+    cuvis.set_log_level("info")
 
     print("loading session file...")
     session = cuvis.SessionFile(measurementLoc)
@@ -67,9 +67,9 @@ def run_example_changeDistance(userSettingsDir=loc_settings,
     print(mesu.distance)
     print("saving...")
     mesu.save(saveArgs)
+    
+    cuvis.shutdown()
     print("finished.")
-
-    pass
 
 
 if __name__ == "__main__":
