@@ -3,7 +3,7 @@ import platform
 
 import cuvis
 
-### default directories and files
+# default directories and files
 data_dir = None
 
 if platform.system() == "Windows":
@@ -44,8 +44,8 @@ def run_example_reprocessMeasurement(
         distanceLoc=loc_distance,
         outDir=loc_output):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.General.init(userSettingsDir)
+    cuvis.General.set_log_level("info")
 
     print("loading measurement file...")
     sessionM = cuvis.SessionFile(measurementLoc)
@@ -82,8 +82,8 @@ def run_example_reprocessMeasurement(
 
     procArgs = cuvis.ProcessingArgs()
     saveArgs = cuvis.SaveArgs(allow_overwrite=True,
-                                    allow_session_file=True,
-                                    allow_info_file=False)
+                              allow_session_file=True,
+                              allow_info_file=False)
 
     modes = [cuvis.ProcessingMode.Raw,
              cuvis.ProcessingMode.DarkSubtract,
@@ -107,8 +107,8 @@ def run_example_reprocessMeasurement(
         else:
             print("Cannot process to {} mode!".format(mode))
 
+    cuvis.General.shutdown()
     print("finished.")
-
     pass
 
 

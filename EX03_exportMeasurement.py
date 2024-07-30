@@ -3,7 +3,7 @@ import platform
 
 import cuvis
 
-### default directories and files
+# default directories and files
 data_dir = None
 plugin_dir = None
 
@@ -27,7 +27,7 @@ elif platform.system() == "Linux":
 loc_file = os.path.join(data_dir,
                         "set0_single",
                         "single.cu3s")
-loc_plugin = os.path.join(plugin_dir,"ref", "cai.xml")
+loc_plugin = os.path.join(plugin_dir, "ref", "cai.xml")
 
 # default settings
 loc_settings = os.path.join(data_dir, "settings")
@@ -41,8 +41,8 @@ def run_example_exportMeasurement(userSettingsDir=loc_settings,
                                   pluginLoc=loc_plugin,
                                   exportDir=loc_output):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.General.init(userSettingsDir)
+    cuvis.General.set_log_level("info")
 
     print("loading session file...")
     session = cuvis.SessionFile(measurementLoc)
@@ -84,6 +84,8 @@ def run_example_exportMeasurement(userSettingsDir=loc_settings,
     viewExporter = cuvis.ViewExporter(view_export_settings)
     viewExporter.apply(mesu)
 
+    cuvis.General.shutdown()
+    print("finished.")
     pass
 
 

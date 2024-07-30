@@ -3,7 +3,7 @@ import platform
 
 import cuvis
 
-### default directories and files
+# default directories and files
 data_dir = None
 
 if platform.system() == "Windows":
@@ -33,8 +33,8 @@ def run_example_changeDistance(userSettingsDir=loc_settings,
                                distance=loc_distance,
                                exportDir=loc_output):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.General.init(userSettingsDir)
+    cuvis.General.set_log_level("info")
 
     print("loading session file...")
     session = cuvis.SessionFile(measurementLoc)
@@ -57,7 +57,7 @@ def run_example_changeDistance(userSettingsDir=loc_settings,
     saveArgs = cuvis.SaveArgs(export_dir=exportDir, allow_overwrite=True)
 
     assert processingContext.is_capable(mesu,
-                                       processingContext.get_processing_args())
+                                        processingContext.get_processing_args())
 
     print("changing distance...")
     print("original distance...")
@@ -67,8 +67,9 @@ def run_example_changeDistance(userSettingsDir=loc_settings,
     print(mesu.distance)
     print("saving...")
     mesu.save(saveArgs)
-    print("finished.")
 
+    cuvis.General.shutdown()
+    print("finished.")
     pass
 
 

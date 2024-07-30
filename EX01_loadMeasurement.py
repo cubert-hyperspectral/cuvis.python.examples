@@ -6,7 +6,7 @@ import numpy as np
 
 import cuvis
 
-### default directories and files
+# default directories and files
 data_dir = None
 
 if platform.system() == "Windows":
@@ -30,8 +30,8 @@ def run_example_loadMeasurement(
         userSettingsDir=loc_settings,
         measurementLoc=loc_file):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.General.init(userSettingsDir)
+    cuvis.General.set_log_level("info")
 
     print("loading session...")
     session = cuvis.SessionFile(measurementLoc)
@@ -44,7 +44,7 @@ def run_example_loadMeasurement(
                                             mesu.integration_time,
                                             mesu.processing_mode.name,
                                             ))
-    
+
     if isinstance(mesu.measurement_flags, cuvis.MeasurementFlags):
         print(f"Flags: {mesu.measurement_flags}")
         for v in cuvis.MeasurementFlags.supremum():
@@ -72,6 +72,7 @@ def run_example_loadMeasurement(
     plt.title("Spectrum of {} for x={}, y={}".format(mesu.name, x, y))
     plt.show()
 
+    cuvis.General.shutdown()
     print("finished.")
     pass
 

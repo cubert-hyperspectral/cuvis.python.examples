@@ -6,7 +6,7 @@ from datetime import timedelta
 
 import cuvis
 
-### default directories and files
+# default directories and files
 data_dir = None
 lib_dir = None
 
@@ -29,7 +29,7 @@ loc_settings = os.path.join(data_dir, "settings")
 loc_output = os.path.join(os.getcwd(), "EX05_images")
 
 # parameters
-loc_exptime = 100 #in ms
+loc_exptime = 100  # in ms
 loc_nimgs = 10
 
 
@@ -40,8 +40,8 @@ def run_example_recordSingleImage(
         exposure=loc_exptime,
         nrImgs=loc_nimgs):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.General.init(userSettingsDir)
+    cuvis.General.set_log_level("info")
 
     print(
         "loading calibration, processing and acquisition context (factory)...")
@@ -50,7 +50,7 @@ def run_example_recordSingleImage(
     acquisitionContext = cuvis.AcquisitionContext(calibration)
 
     saveArgs = cuvis.SaveArgs(export_dir=recDir, allow_overwrite=True,
-                                    allow_session_file=True)
+                              allow_session_file=True)
     cubeExporter = cuvis.CubeExporter(saveArgs)
 
     while acquisitionContext.state == cuvis.HardwareState.Offline:
@@ -77,8 +77,8 @@ def run_example_recordSingleImage(
         else:
             print("failed")
 
+    cuvis.General.shutdown()
     print("finished.")
-
     pass
 
 

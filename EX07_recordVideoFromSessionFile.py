@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 import cuvis
 
-### default directories and files
+# default directories and files
 data_dir = None
 lib_dir = None
 
@@ -30,7 +30,7 @@ loc_settings = os.path.join(data_dir, "settings")
 loc_output = os.path.join(os.getcwd(), "EX07_video")
 
 # parameters
-loc_exptime = 100 #in ms
+loc_exptime = 100  # in ms
 loc_autoexp = False
 loc_fps = 2
 
@@ -42,8 +42,8 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
                                            autoExp=loc_autoexp,
                                            fps=loc_fps):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.General.init(userSettingsDir)
+    cuvis.General.set_log_level("info")
 
     print("loading session file ...")
     session = cuvis.SessionFile(measurementLoc)
@@ -51,15 +51,15 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
     print("loading acquisition context...")
     acquisitionContext = cuvis.AcquisitionContext(session, simulate=True)  #
     # using images from session file instead of camera
-    session_info = cuvis.SessionData("video",0,0)
+    session_info = cuvis.SessionData("video", 0, 0)
     acquisitionContext.session_info = session_info
 
     print("prepare saving of measurements...")
     saveArgs = cuvis.SaveArgs(export_dir=recDir,
-                                    allow_overwrite=True,
-                                    allow_session_file=True,
-                                    fps=fps,
-                                    operation_mode=cuvis.OperationMode.Internal)
+                              allow_overwrite=True,
+                              allow_session_file=True,
+                              fps=fps,
+                              operation_mode=cuvis.OperationMode.Internal)
 
     print("writing files to: {}".format(recDir))
     cubeExporter = cuvis.CubeExporter(saveArgs)
@@ -86,18 +86,18 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
 
     print("initializing simulated hardware...")
     acquisitionContext.integration_time = exposure
-    acquisitionContext.operation_mode =cuvis.OperationMode.Internal
+    acquisitionContext.operation_mode = cuvis.OperationMode.Internal
     acquisitionContext.fps = fps
     acquisitionContext.auto_exp = autoExp
     acquisitionContext.set_continuous(True)
 
     print("configuring worker...")
     workerSettings = cuvis.WorkerSettings(keep_out_of_sequence=False,
-                                                poll_intervall=10,
-                                                worker_count=0,
-                                                hard_limit=10,
-                                                soft_limit=10,
-                                                can_drop=True)
+                                          poll_intervall=10,
+                                          worker_count=0,
+                                          hard_limit=10,
+                                          soft_limit=10,
+                                          can_drop=True)
     worker = cuvis.Worker(workerSettings)
     worker.set_acquisition_context(acquisitionContext)
     worker.set_processing_context(processingContext)
@@ -126,8 +126,9 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
 
     print("acquisition stopped...")
     acquisitionContext.set_continuous(False)
-    print("finished.")
 
+    cuvis.General.shutdown()
+    print("finished.")
     pass
 
 
@@ -167,7 +168,7 @@ if __name__ == "__main__":
     fps = int(fps)
 
     run_example_recordVideoFromSessionFile(userSettingsDir, factoryDir, recDir, exposure,
-                            autoExp, fps)
+                                           autoExp, fps)
 
     while 1:
         sys.exit(0)
