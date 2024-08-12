@@ -42,8 +42,8 @@ async def run_example_recordSingleImage(
         exposure=loc_exptime,
         nrImgs=loc_nimgs):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.init(userSettingsDir)
+    cuvis.set_log_level("info")
 
     print(
         "loading calibration, processing and acquisition context (factory)...")
@@ -76,9 +76,8 @@ async def run_example_recordSingleImage(
         else:
             print("failed")
 
+    cuvis.shutdown()
     print("finished.")
-
-    pass
 
 
 if __name__ == "__main__":

@@ -30,8 +30,8 @@ def run_example_loadMeasurement(
         userSettingsDir=loc_settings,
         measurementLoc=loc_file):
     print("loading user settings...")
-    settings = cuvis.General(userSettingsDir)
-    settings.set_log_level("info")
+    cuvis.init(userSettingsDir)
+    cuvis.set_log_level("info")
 
     print("loading session...")
     session = cuvis.SessionFile(measurementLoc)
@@ -72,8 +72,8 @@ def run_example_loadMeasurement(
     plt.title("Spectrum of {} for x={}, y={}".format(mesu.name, x, y))
     plt.show()
 
+    cuvis.shutdown()
     print("finished.")
-    pass
 
 
 if __name__ == "__main__":
