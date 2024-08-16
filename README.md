@@ -5,7 +5,7 @@
 ## Running the examples
 To get the exampels running, first set up a project directory with (probably) an own environment and clone this git repository there.
 
-Then, you need to install the Cuvis C SDK (see [here](https://cloud.cubert-gmbh.de/s/q3YiPZPJe5oXziZ), as explained for the python wrapper [here](https://github.com/cubert-hyperspectral/cuvis.python).
+Then, you need to install the Cuvis C SDK (see [here](https://cloud.cubert-gmbh.de/s/qpxkyWkycrmBK9m), as explained for the python wrapper [here](https://github.com/cubert-hyperspectral/cuvis.python).
 
 Then you can simply install the required dependencies using pip in your local project environment.
 
