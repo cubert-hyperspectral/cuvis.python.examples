@@ -1,45 +1,14 @@
 import os
 import platform
+from pathlib import Path
 
 import cuvis
 
-### default directories and files
-data_dir = None
-plugin_dir = None
 
-if platform.system() == "Windows":
-    lib_dir = os.getenv("CUVIS")
-    data_dir = os.path.normpath(os.path.join(lib_dir, os.path.pardir, "sdk",
-                                             "sample_data", "set_examples"))
-    plugin_dir = os.path.normpath(os.path.join(lib_dir, os.path.pardir, "sdk",
-                                               "sample_data", "set_examples",
-                                               "userplugin"))
-
-elif platform.system() == "Linux":
-    lib_dir = os.getenv("CUVIS_DATA")
-    data_dir = os.path.normpath(
-        os.path.join(lib_dir, "sample_data", "set_examples"))
-    plugin_dir = os.path.normpath(os.path.join(lib_dir, "sdk",
-                                               "sample_data", "set_examples",
-                                               "plugin"))
-
-# default images
-loc_file = os.path.join(data_dir,
-                        "set0_single",
-                        "single.cu3s")
-loc_plugin = os.path.join(plugin_dir,"ref", "cai.xml")
-
-# default settings
-loc_settings = os.path.join(data_dir, "settings")
-
-# default output
-loc_output = os.path.join(os.getcwd(), "EX03_export")
-
-
-def run_example_exportMeasurement(userSettingsDir=loc_settings,
-                                  measurementLoc=loc_file,
-                                  pluginLoc=loc_plugin,
-                                  exportDir=loc_output):
+def run_example_exportMeasurement(userSettingsDir,
+                                  measurementLoc,
+                                  pluginLoc,
+                                  exportDir):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
@@ -90,6 +59,26 @@ def run_example_exportMeasurement(userSettingsDir=loc_settings,
 
 if __name__ == "__main__":
 
+    if platform.system() == "Windows":
+        data_dir = Path(os.getenv("CUVIS")).parent / "sdk" / \
+            "sample_data" / "set_examples"
+        plugin_dir = data_dir / "userplugin"
+
+    elif platform.system() == "Linux":
+        data_dir = Path(os.getenv("CUVIS_DATA")) / \
+            "sample_data" / "set_examples"
+        plugin_dir = data_dir / "plugin"
+
+    # default images
+    loc_file = data_dir / "set0_single" / "single.cu3s"
+    loc_plugin = plugin_dir / "ref" / "cai.xml"
+
+    # default settings
+    loc_settings = data_dir / "settings"
+
+    # default output
+    loc_output = Path(os.getcwd()) / "EX03_export"
+
     print("Example 03: Export Measurement. Please provide:")
 
     userSettingsDir = input(
@@ -112,5 +101,5 @@ if __name__ == "__main__":
     if exportDir.strip().lower() in ["", "default"]:
         exportDir = loc_output
 
-    run_example_exportMeasurement(userSettingsDir, measurementLoc, pluginLoc,
-                                  exportDir)
+    run_example_exportMeasurement(str(userSettingsDir), str(measurementLoc), str(pluginLoc),
+                                  str(exportDir))

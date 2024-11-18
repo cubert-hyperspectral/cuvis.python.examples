@@ -1,37 +1,14 @@
 import os
 import platform
+from pathlib import Path
 
 import cuvis
 
-### default directories and files
-data_dir = None
 
-if platform.system() == "Windows":
-    lib_dir = os.getenv("CUVIS")
-    data_dir = os.path.normpath(os.path.join(lib_dir, os.path.pardir, "sdk",
-                                             "sample_data", "set_examples"))
-elif platform.system() == "Linux":
-    lib_dir = os.getenv("CUVIS_DATA")
-    data_dir = os.path.normpath(
-        os.path.join(lib_dir, "sample_data", "set_examples"))
-
-# default image
-loc_file = os.path.join(data_dir,
-                        "set0_single",
-                        "single.cu3s")
-# default settings
-loc_settings = os.path.join(data_dir, "settings")
-
-loc_distance = int(1000)
-
-# default output
-loc_output = os.path.join(os.getcwd(), "EX04_distance_changed")
-
-
-def run_example_changeDistance(userSettingsDir=loc_settings,
-                               measurementLoc=loc_file,
-                               distance=loc_distance,
-                               exportDir=loc_output):
+def run_example_changeDistance(userSettingsDir,
+                               measurementLoc,
+                               distance,
+                               exportDir):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
@@ -57,7 +34,7 @@ def run_example_changeDistance(userSettingsDir=loc_settings,
     saveArgs = cuvis.SaveArgs(export_dir=exportDir, allow_overwrite=True)
 
     assert processingContext.is_capable(mesu,
-                                       processingContext.get_processing_args())
+                                        processingContext.get_processing_args())
 
     print("changing distance...")
     print("original distance...")
@@ -67,12 +44,30 @@ def run_example_changeDistance(userSettingsDir=loc_settings,
     print(mesu.distance)
     print("saving...")
     mesu.save(saveArgs)
-    
+
     cuvis.shutdown()
     print("finished.")
 
 
 if __name__ == "__main__":
+
+    if platform.system() == "Windows":
+        data_dir = Path(os.getenv("CUVIS")).parent / "sdk" / \
+            "sample_data" / "set_examples"
+
+    elif platform.system() == "Linux":
+        data_dir = Path(os.getenv("CUVIS_DATA")) / \
+            "sample_data" / "set_examples"
+
+    # default image
+    loc_file = data_dir / "set0_single" / "single.cu3s"
+    # default settings
+    loc_settings = data_dir / "settings"
+
+    loc_distance = int(1000)
+
+    # default output
+    loc_output = Path(os.getcwd()) / "EX04_distance_changed"
 
     print("Example 04: Change distance. Please provide:")
 
@@ -96,5 +91,5 @@ if __name__ == "__main__":
     if exportDir.strip().lower() in ["", "default"]:
         exportDir = loc_output
 
-    run_example_changeDistance(userSettingsDir, measurementLoc,
-                               distance, exportDir)
+    run_example_changeDistance(str(userSettingsDir), str(measurementLoc),
+                               distance, str(exportDir))
