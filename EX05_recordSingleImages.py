@@ -1,6 +1,5 @@
 import os
 import platform
-import sys
 import time
 from datetime import timedelta
 from pathlib import Path

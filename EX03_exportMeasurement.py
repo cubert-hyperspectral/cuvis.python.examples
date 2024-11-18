@@ -29,13 +29,13 @@ def run_example_exportMeasurement(userSettingsDir,
 
     print("Export to Multi-Channel Tiff...")
     multi_tiff_settings = cuvis.TiffExportSettings(
-        export_dir=os.path.join(exportDir, "multi"), format="MultiChannel")
+        export_dir=os.path.join(exportDir, "multi"), format=cuvis.TiffFormat.MultiChannel)
     multiTiffExporter = cuvis.TiffExporter(multi_tiff_settings)
     multiTiffExporter.apply(mesu)
 
     print("Export to separate Tiffs...")
     single_tiff_settings = cuvis.TiffExportSettings(
-        export_dir=os.path.join(exportDir, "single"), format="Single")
+        export_dir=os.path.join(exportDir, "single"), format=cuvis.TiffFormat.Single)
     singleTiffExporter = cuvis.TiffExporter(single_tiff_settings)
     singleTiffExporter.apply(mesu)
 
@@ -60,14 +60,16 @@ def run_example_exportMeasurement(userSettingsDir,
 if __name__ == "__main__":
 
     if platform.system() == "Windows":
-        data_dir = Path(os.getenv("CUVIS")).parent / "sdk" / \
+        lib_dir = Path(os.getenv("CUVIS"))
+        data_dir = lib_dir.parent / "sdk" / \
             "sample_data" / "set_examples"
-        plugin_dir = data_dir / "userplugin"
+        plugin_dir = lib_dir.parent / "user" / "plugin"
 
     elif platform.system() == "Linux":
-        data_dir = Path(os.getenv("CUVIS_DATA")) / \
+        lib_dir = Path(os.getenv("CUVIS_DATA"))
+        data_dir = lib_dir / \
             "sample_data" / "set_examples"
-        plugin_dir = data_dir / "plugin"
+        plugin_dir = lib_dir / "user" / "plugin"
 
     # default images
     loc_file = data_dir / "set0_single" / "single.cu3s"

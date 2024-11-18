@@ -68,8 +68,8 @@ def run_example_reprocessMeasurement(
             print("processing to mode {}...".format(mode))
             processingContext.set_processing_args(procArgs)
             mesu = processingContext.apply(mesu)
-            mesu.set_name(mode)
-            saveArgs.export_dir = os.path.join(outDir, mode)
+            mesu.set_name(mode.name)
+            saveArgs.export_dir = str(Path(outDir) / mode.name)
             exporter = cuvis.Export.CubeExporter(saveArgs)
             exporter.apply(mesu)
 
