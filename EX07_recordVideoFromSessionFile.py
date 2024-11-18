@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 import cuvis
 
-### default directories and files
+# default directories and files
 data_dir = None
 lib_dir = None
 
@@ -30,7 +30,7 @@ loc_settings = os.path.join(data_dir, "settings")
 loc_output = os.path.join(os.getcwd(), "EX07_video")
 
 # parameters
-loc_exptime = 100 #in ms
+loc_exptime = 100  # in ms
 loc_autoexp = False
 loc_fps = 2
 
@@ -51,15 +51,15 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
     print("loading acquisition context...")
     acquisitionContext = cuvis.AcquisitionContext(session, simulate=True)  #
     # using images from session file instead of camera
-    session_info = cuvis.SessionData("video",0,0)
+    session_info = cuvis.SessionData("video", 0, 0)
     acquisitionContext.session_info = session_info
 
     print("prepare saving of measurements...")
     saveArgs = cuvis.SaveArgs(export_dir=recDir,
-                                    allow_overwrite=True,
-                                    allow_session_file=True,
-                                    fps=fps,
-                                    operation_mode=cuvis.OperationMode.Internal)
+                              allow_overwrite=True,
+                              allow_session_file=True,
+                              fps=fps,
+                              operation_mode=cuvis.OperationMode.Internal)
 
     print("writing files to: {}".format(recDir))
     cubeExporter = cuvis.CubeExporter(saveArgs)
@@ -86,47 +86,47 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
 
     print("initializing simulated hardware...")
     acquisitionContext.integration_time = exposure
-    acquisitionContext.operation_mode =cuvis.OperationMode.Internal
+    acquisitionContext.operation_mode = cuvis.OperationMode.Internal
     acquisitionContext.fps = fps
     acquisitionContext.auto_exp = autoExp
     acquisitionContext.set_continuous(True)
 
     print("configuring worker...")
-    workerSettings = cuvis.WorkerSettings(keep_out_of_sequence=False,
-                                                poll_intervall=10,
-                                                worker_count=0,
-                                                hard_limit=10,
-                                                soft_limit=10,
-                                                can_drop=True)
+    workerSettings = cuvis.WorkerSettings()
     worker = cuvis.Worker(workerSettings)
     worker.set_acquisition_context(acquisitionContext)
     worker.set_processing_context(processingContext)
     worker.set_exporter(cubeExporter)
+    worker.start_processing()
 
     print("recording...! (will stop after 2 minutes)")
     start = datetime.now()
     while (datetime.now() - start) < timedelta(minutes=2):
 
         while 1:
+            print(worker.state)
             if worker.has_next_result():
                 break
             else:
                 time.sleep(0.001)
 
-        workerContainer = worker.get_next_result()
+        workerContainer = worker.get_next_result(0)
         if workerContainer.mesu.data is not None:
             print("current handle index: {}".format(
                 workerContainer.mesu.session_info.sequence_number))
-            if worker.get_queue_limits()["soft_limit"] == worker.get_queue_used():
-                print("worker queue is full! Main() loop can not keep up!")
-                break
-            if acquisitionContext.queue_size == acquisitionContext.queue_used:
-                print("acquisition queue is full! Worker can not keep up!")
-                break
+
+            workerState = worker.state
+
+            # if worker.get_queue_limits()["soft_limit"] == worker.get_queue_used():
+            #    print("worker queue is full! Main() loop can not keep up!")
+            #    break
+            # if acquisitionContext.queue_size == acquisitionContext.queue_used:
+            #    print("acquisition queue is full! Worker can not keep up!")
+            #    break
 
     print("acquisition stopped...")
     acquisitionContext.set_continuous(False)
-    
+    worker.stop_processing()
     cuvis.shutdown()
     print("finished.")
 
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     fps = int(fps)
 
     run_example_recordVideoFromSessionFile(userSettingsDir, factoryDir, recDir, exposure,
-                            autoExp, fps)
+                                           autoExp, fps)
 
     while 1:
         sys.exit(0)

@@ -7,8 +7,7 @@ import asyncio as a
 import cuvis
 
 
-
-### default directories and files
+# default directories and files
 data_dir = None
 lib_dir = None
 
@@ -31,7 +30,7 @@ loc_settings = os.path.join(data_dir, "settings")
 loc_output = os.path.join(os.getcwd(), "EX06_video")
 
 # parameters
-loc_exptime = 100 #in ms
+loc_exptime = 100  # in ms
 loc_autoexp = False
 loc_fps = 2
 
@@ -39,36 +38,37 @@ loc_fps = 2
 async def state_changed_callback(state, component_states):
     print(f'camera is {state.name}')
 
+
 async def worker_collect_mesu_task(workerContainer: cuvis.WorkerResult):
     if workerContainer.mesu.data is not None:
-            print("current handle index: {}".format(
-                workerContainer.mesu.session_info.sequence_number))
+        print("current handle index: {}".format(
+            workerContainer.mesu.session_info.sequence_number))
 
 
 async def run_example_recordVideo(userSettingsDir=loc_settings,
-                            factoryDir=loc_factory,
-                            recDir=loc_output,
-                            exposure=loc_exptime,
-                            autoExp=loc_autoexp,
-                            fps=loc_fps):
+                                  factoryDir=loc_factory,
+                                  recDir=loc_output,
+                                  exposure=loc_exptime,
+                                  autoExp=loc_autoexp,
+                                  fps=loc_fps):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
-    
+
     print("loading calibration (factory)...")
     calibration = cuvis.Calibration(factoryDir)
 
     print("loading acquisition context...")
     acquisitionContext = cuvis.AcquisitionContext(calibration)
-    session_info = cuvis.SessionData('video',0,0)
+    session_info = cuvis.SessionData('video', 0, 0)
     acquisitionContext.session_info = session_info
 
     print("prepare saving of measurements...")
     saveArgs = cuvis.SaveArgs(export_dir=recDir,
-                                    allow_overwrite=True,
-                                    allow_session_file=True,
-                                    fps=fps,
-                                    operation_mode=cuvis.OperationMode.Software)
+                              allow_overwrite=True,
+                              allow_session_file=True,
+                              fps=fps,
+                              operation_mode=cuvis.OperationMode.Software)
 
     print("writing files to: {}".format(recDir))
     cubeExporter = cuvis.CubeExporter(saveArgs)
@@ -102,12 +102,7 @@ async def run_example_recordVideo(userSettingsDir=loc_settings,
     await acquisitionContext.set_continuous_async(True)
 
     print("configuring worker...")
-    workerSettings = cuvis.WorkerSettings(keep_out_of_sequence=False,
-                                                poll_intervall=10,
-                                                worker_count=0,
-                                                hard_limit=10,
-                                                soft_limit=10,
-                                                can_drop=True)
+    workerSettings = cuvis.WorkerSettings()
     worker = cuvis.Worker(workerSettings)
     worker.set_acquisition_context(acquisitionContext)
     worker.set_processing_context(processingContext)
@@ -116,13 +111,14 @@ async def run_example_recordVideo(userSettingsDir=loc_settings,
     print("recording...! (will stop after 2 minutes)")
 
     worker.register_worker_callback(worker_collect_mesu_task)
+    worker.start_processing()
 
     await a.sleep(2 * 60)
     worker.reset_worker_callback()
 
     print("acquisition stopped...")
     await acquisitionContext.set_continuous_async(False)
-    
+    worker.stop_processing()
     cuvis.shutdown()
     print("finished.")
 
@@ -163,7 +159,7 @@ if __name__ == "__main__":
     fps = int(fps)
 
     a.run(run_example_recordVideo(userSettingsDir, factoryDir, recDir, exposure,
-                            autoExp, fps))
+                                  autoExp, fps))
 
     while 1:
         sys.exit(0)
