@@ -112,7 +112,14 @@ def run_example_recordVideo(userSettingsDir=loc_settings,
             print("current handle index: {}".format(
                 workerContainer.mesu.session_info.sequence_number))
 
-            print(workerContainer)
+            workerState = worker.state
+            if workerState.resultsInQueue == worker.output_queue_limit:
+                print("worker output queue is full! Main() loop can not keep up!")
+                break
+
+            if workerState.measurementsInQueue == worker.mandatory_queue_limit:
+                print("acquisition queue is full! Worker can not keep up!")
+                break
 
     print("acquisition stopped...")
     acquisitionContext.set_continuous(False)

@@ -104,7 +104,6 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
     while (datetime.now() - start) < timedelta(minutes=2):
 
         while 1:
-            print(worker.state)
             if worker.has_next_result():
                 break
             else:
@@ -116,13 +115,13 @@ def run_example_recordVideoFromSessionFile(userSettingsDir=loc_settings,
                 workerContainer.mesu.session_info.sequence_number))
 
             workerState = worker.state
+            if workerState.resultsInQueue == worker.output_queue_limit:
+                print("worker output queue is full! Main() loop can not keep up!")
+                break
 
-            # if worker.get_queue_limits()["soft_limit"] == worker.get_queue_used():
-            #    print("worker queue is full! Main() loop can not keep up!")
-            #    break
-            # if acquisitionContext.queue_size == acquisitionContext.queue_used:
-            #    print("acquisition queue is full! Worker can not keep up!")
-            #    break
+            if workerState.measurementsInQueue == worker.mandatory_queue_limit:
+                print("acquisition queue is full! Worker can not keep up!")
+                break
 
     print("acquisition stopped...")
     acquisitionContext.set_continuous(False)
