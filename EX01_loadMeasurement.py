@@ -32,7 +32,7 @@ def run_example_loadMeasurement(
         for v in cuvis.MeasurementFlags.supremum():
             print(f'{v}: {v in mesu.measurement_flags}')
 
-    cube = mesu.data.get("cube", None)
+    cube = mesu.cube
     if cube is None:
         raise Exception("Cube not found")
 
