@@ -1,46 +1,18 @@
 import os
 import platform
-import sys
 import time
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import cuvis
 
 
-# default directories and files
-data_dir = None
-lib_dir = None
-
-if platform.system() == "Windows":
-    lib_dir = os.getenv("CUVIS")
-    data_dir = os.path.normpath(os.path.join(lib_dir, os.path.pardir, "sdk",
-                                             "sample_data", "set_examples"))
-elif platform.system() == "Linux":
-    lib_dir = os.getenv("CUVIS_DATA")
-    data_dir = os.path.normpath(
-        os.path.join(lib_dir, "sample_data", "set_examples"))
-
-# default factory
-loc_factory = os.path.join(lib_dir, os.pardir,
-                           "factory")
-# default settings
-loc_settings = os.path.join(data_dir, "settings")
-
-# default output
-loc_output = os.path.join(os.getcwd(), "EX06_video")
-
-# parameters
-loc_exptime = 100  # in ms
-loc_autoexp = False
-loc_fps = 2
-
-
-def run_example_recordVideo(userSettingsDir=loc_settings,
-                            factoryDir=loc_factory,
-                            recDir=loc_output,
-                            exposure=loc_exptime,
-                            autoExp=loc_autoexp,
-                            fps=loc_fps):
+def run_example_recordVideo(userSettingsDir,
+                            factoryDir,
+                            recDir,
+                            exposure,
+                            autoExp,
+                            fps):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
@@ -129,6 +101,29 @@ def run_example_recordVideo(userSettingsDir=loc_settings,
 
 
 if __name__ == "__main__":
+
+    if platform.system() == "Windows":
+        lib_dir = Path(os.getenv("CUVIS"))
+        data_dir = lib_dir.parent / "sdk" / \
+            "sample_data" / "set_examples"
+    elif platform.system() == "Linux":
+        lib_dir = os.getenv("CUVIS_DATA")
+        data_dir = lib_dir / \
+            "sample_data" / "set_examples"
+
+    # default factory
+    loc_factory = lib_dir.parent / "factory"
+    # default settings
+    loc_settings = data_dir / "settings"
+
+    # default output
+    loc_output = Path(os.getcwd()) / "EX06_video"
+
+    # parameters
+    loc_exptime = 100  # in ms
+    loc_autoexp = False
+    loc_fps = 2
+
     print("Example 06: Record video file. Please provide:")
 
     userSettingsDir = input(
@@ -163,8 +158,5 @@ if __name__ == "__main__":
         fps = loc_fps
     fps = int(fps)
 
-    run_example_recordVideo(userSettingsDir, factoryDir, recDir, exposure,
+    run_example_recordVideo(str(userSettingsDir), str(factoryDir), str(recDir), exposure,
                             autoExp, fps)
-
-    while 1:
-        sys.exit(0)
