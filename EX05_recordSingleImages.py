@@ -1,44 +1,18 @@
 import os
 import platform
-import sys
 import time
 from datetime import timedelta
+from pathlib import Path
 
 import cuvis
 
-# default directories and files
-data_dir = None
-lib_dir = None
-
-if platform.system() == "Windows":
-    lib_dir = os.getenv("CUVIS")
-    data_dir = os.path.normpath(os.path.join(lib_dir, os.path.pardir, "sdk",
-                                             "sample_data", "set_examples"))
-elif platform.system() == "Linux":
-    lib_dir = os.getenv("CUVIS_DATA")
-    data_dir = os.path.normpath(
-        os.path.join(lib_dir, "sample_data", "set_examples"))
-
-# default factory
-loc_factory = os.path.join(lib_dir, os.pardir,
-                           "factory")
-# default settings
-loc_settings = os.path.join(data_dir, "settings")
-
-# default output
-loc_output = os.path.join(os.getcwd(), "EX05_images")
-
-# parameters
-loc_exptime = 100  # in ms
-loc_nimgs = 10
-
 
 def run_example_recordSingleImage(
-        userSettingsDir=loc_settings,
-        factoryDir=loc_factory,
-        recDir=loc_output,
-        exposure=loc_exptime,
-        nrImgs=loc_nimgs):
+        userSettingsDir,
+        factoryDir,
+        recDir,
+        exposure,
+        nrImgs):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
@@ -82,6 +56,28 @@ def run_example_recordSingleImage(
 
 
 if __name__ == "__main__":
+
+    if platform.system() == "Windows":
+        lib_dir = Path(os.getenv("CUVIS"))
+        data_dir = lib_dir.parent / "sdk" / \
+            "sample_data" / "set_examples"
+    elif platform.system() == "Linux":
+        lib_dir = os.getenv("CUVIS_DATA")
+        data_dir = lib_dir / \
+            "sample_data" / "set_examples"
+
+    # default factory
+    loc_factory = lib_dir.parent / "factory"
+    # default settings
+    loc_settings = data_dir / "settings"
+
+    # default output
+    loc_output = Path(os.getcwd()) / "EX05_images"
+
+    # parameters
+    loc_exptime = 100  # in msw
+    loc_nimgs = 10
+
     print("Example 05: Record single image. Please provide:")
 
     userSettingsDir = input(
@@ -109,8 +105,5 @@ if __name__ == "__main__":
         nrImgs = loc_nimgs
     nrImgs = int(nrImgs)
 
-    run_example_recordSingleImage(userSettingsDir, factoryDir, recDir, exposure,
+    run_example_recordSingleImage(str(userSettingsDir), str(factoryDir), str(recDir), exposure,
                                   nrImgs)
-
-    while 1:
-        sys.exit(0)

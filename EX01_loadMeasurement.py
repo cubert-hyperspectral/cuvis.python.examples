@@ -1,34 +1,16 @@
 import os
 import platform
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 
 import cuvis
 
-### default directories and files
-data_dir = None
-
-if platform.system() == "Windows":
-    lib_dir = os.getenv("CUVIS")
-    data_dir = os.path.normpath(os.path.join(lib_dir, os.path.pardir, "sdk",
-                                             "sample_data", "set_examples"))
-elif platform.system() == "Linux":
-    lib_dir = os.getenv("CUVIS_DATA")
-    data_dir = os.path.normpath(
-        os.path.join(lib_dir, "sample_data", "set_examples"))
-
-# default image
-loc_file = os.path.join(data_dir,
-                        "set0_single",
-                        "single.cu3s")
-# default settings
-loc_settings = os.path.join(data_dir, "settings")
-
 
 def run_example_loadMeasurement(
-        userSettingsDir=loc_settings,
-        measurementLoc=loc_file):
+        userSettingsDir,
+        measurementLoc):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
@@ -44,13 +26,13 @@ def run_example_loadMeasurement(
                                             mesu.integration_time,
                                             mesu.processing_mode.name,
                                             ))
-    
+
     if isinstance(mesu.measurement_flags, cuvis.MeasurementFlags):
         print(f"Flags: {mesu.measurement_flags}")
         for v in cuvis.MeasurementFlags.supremum():
             print(f'{v}: {v in mesu.measurement_flags}')
 
-    cube = mesu.data.get("cube", None)
+    cube = mesu.cube
     if cube is None:
         raise Exception("Cube not found")
 
@@ -78,6 +60,20 @@ def run_example_loadMeasurement(
 
 if __name__ == "__main__":
 
+    if platform.system() == "Windows":
+        data_dir = Path(os.getenv("CUVIS")).parent / "sdk" / \
+            "sample_data" / "set_examples"
+
+    elif platform.system() == "Linux":
+        data_dir = Path(os.getenv("CUVIS_DATA")) / \
+            "sample_data" / "set_examples"
+
+    # default image
+    loc_file = data_dir / "set0_single" / "single.cu3s"
+
+    # default settings
+    loc_settings = data_dir / "settings"
+
     print("Example 01: Load Measurement. Please provide:")
 
     userSettingsDir = input(
@@ -90,4 +86,4 @@ if __name__ == "__main__":
     if measurementLoc.strip().lower() in ["", "default"]:
         measurementLoc = loc_file
 
-    run_example_loadMeasurement(userSettingsDir, measurementLoc)
+    run_example_loadMeasurement(str(userSettingsDir), str(measurementLoc))
