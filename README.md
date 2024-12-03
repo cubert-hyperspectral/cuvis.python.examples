@@ -15,7 +15,7 @@ pip install -r requirements.txt
 
 Alternatively to pip, take a look on how to install the python wrapper manually [here](https://github.com/cubert-hyperspectral/cuvis.python).
 
-For running some of the examples, you have to use sample data (provided [here](https://cloud.cubert-gmbh.de/s/SrkSRja5FKGS2Tw)).
+For running some of the examples, you have to use sample data (provided [here](https://cloud.cubert-gmbh.de/s/SrkSRja5FKGS2Tw?path=%2FCuvis%203.2%20Sample%20Data)).
 
 ## Inventory
 
