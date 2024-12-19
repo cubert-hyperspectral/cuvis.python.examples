@@ -1,48 +1,17 @@
 import os
 import platform
+from pathlib import Path
 
 import cuvis
 
-### default directories and files
-data_dir = None
-
-if platform.system() == "Windows":
-    lib_dir = os.getenv("CUVIS")
-    data_dir = os.path.normpath(os.path.join(lib_dir, os.path.pardir, "sdk",
-                                             "sample_data", "set_examples"))
-elif platform.system() == "Linux":
-    lib_dir = os.getenv("CUVIS_DATA")
-    data_dir = os.path.normpath(
-        os.path.join(lib_dir, "sample_data", "set_examples"))
-
-# default images
-loc_file = os.path.join(data_dir,
-                        "set0_single",
-                        "single_raw.cu3s")
-loc_dark = os.path.join(data_dir,
-                        "set0_single",
-                        "single_dark.cu3s")
-loc_white = os.path.join(data_dir,
-                         "set0_single",
-                         "single_white.cu3s")
-loc_distance = os.path.join(data_dir,
-                            "set0_single",
-                            "single_distance.cu3s")
-
-# default settings
-loc_settings = os.path.join(data_dir, "settings")
-
-# default output
-loc_output = os.path.join(os.getcwd(), "EX02_reprocessed")
-
 
 def run_example_reprocessMeasurement(
-        userSettingsDir=loc_settings,
-        measurementLoc=loc_file,
-        darkLoc=loc_dark,
-        whiteLoc=loc_white,
-        distanceLoc=loc_distance,
-        outDir=loc_output):
+        userSettingsDir,
+        measurementLoc,
+        darkLoc,
+        whiteLoc,
+        distanceLoc,
+        outDir):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
@@ -82,8 +51,8 @@ def run_example_reprocessMeasurement(
 
     procArgs = cuvis.ProcessingArgs()
     saveArgs = cuvis.SaveArgs(allow_overwrite=True,
-                                    allow_session_file=True,
-                                    allow_info_file=False)
+                              allow_session_file=True,
+                              allow_info_file=False)
 
     modes = [cuvis.ProcessingMode.Raw,
              cuvis.ProcessingMode.DarkSubtract,
@@ -99,8 +68,8 @@ def run_example_reprocessMeasurement(
             print("processing to mode {}...".format(mode))
             processingContext.set_processing_args(procArgs)
             mesu = processingContext.apply(mesu)
-            mesu.set_name(mode)
-            saveArgs.export_dir = os.path.join(outDir, mode)
+            mesu.set_name(mode.name)
+            saveArgs.export_dir = str(Path(outDir) / mode.name)
             exporter = cuvis.Export.CubeExporter(saveArgs)
             exporter.apply(mesu)
 
@@ -113,7 +82,29 @@ def run_example_reprocessMeasurement(
 
 if __name__ == "__main__":
 
-    print("Example 02: Reprocess Measurement. Please provide:")
+    if platform.system() == "Windows":
+        data_dir = Path(os.getenv("CUVIS")).parent / "sdk" / \
+            "sample_data" / "set_examples"
+
+    elif platform.system() == "Linux":
+        data_dir = Path(os.getenv("CUVIS_DATA")) / \
+            "sample_data" / "set_examples"
+
+    # default images
+    loc_file = data_dir / "set0_single" / "single_raw.cu3s"
+    loc_dark = data_dir / "set0_single" / "single_dark.cu3s"
+    loc_white = data_dir / "set0_single" / "single_white.cu3s"
+
+    loc_distance = data_dir / "set0_single" / "single_distance.cu3s"
+
+    # default settings
+    loc_settings = data_dir / "settings"
+
+    # default output
+    loc_output = Path(os.getcwd()) / "EX02_reprocessed"
+
+    print(
+        "Example 02: Reprocess Measurement. Please provide:")
 
     userSettingsDir = input(
         "User settings directory (default: {}): ".format(loc_settings))
@@ -143,9 +134,9 @@ if __name__ == "__main__":
     if outDir.strip().lower() in ["", "default"]:
         outDir = loc_output
 
-    run_example_reprocessMeasurement(userSettingsDir,
-                                     measurementLoc,
-                                     darkLoc,
-                                     whiteLoc,
-                                     distanceLoc,
-                                     outDir)
+    run_example_reprocessMeasurement(str(userSettingsDir),
+                                     str(measurementLoc),
+                                     str(darkLoc),
+                                     str(whiteLoc),
+                                     str(distanceLoc),
+                                     str(outDir))
