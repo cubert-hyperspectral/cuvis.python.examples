@@ -10,18 +10,23 @@ import asyncio as a
 
 
 async def run_example_recordSingleImage(
-        userSettingsDir,
-        factoryDir,
-        recDir,
-        exposure,
-        nrImgs):
+        userSettingsDir: str,
+        factoryDir: Path,
+        recDir: str,
+        exposure: int,
+        nrImgs: int):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
 
     print(
         "loading calibration, processing and acquisition context (factory)...")
-    calibration = cuvis.Calibration(factoryDir)
+    if (factoryDir.is_dir()):
+        calibration = cuvis.Calibration(factoryDir)
+    elif (factoryDir.suffix == '.cu3c'):
+        print("using .cu3c file as calibration instead of factory dir...")
+        calibFile = cuvis.SessionFile(factoryDir)
+        calibration = cuvis.Calibration(calibFile)
     processingContext = cuvis.ProcessingContext(calibration)
     acquisitionContext = cuvis.AcquisitionContext(calibration)
 
@@ -84,7 +89,8 @@ if __name__ == "__main__":
     if userSettingsDir.strip().lower() in ["", "default"]:
         userSettingsDir = loc_settings
 
-    factoryDir = input("Factory directory (default: {}): ".format(loc_factory))
+    factoryDir = input(
+        "Factory directory (default: {}) or .cu3c file: ".format(loc_factory))
     if factoryDir.strip().lower() in ["", "default"]:
         factoryDir = loc_factory
 
@@ -104,5 +110,5 @@ if __name__ == "__main__":
         nrImgs = loc_nimgs
     nrImgs = int(nrImgs)
 
-    a.run(run_example_recordSingleImage(str(userSettingsDir), str(factoryDir), str(recDir), exposure,
+    a.run(run_example_recordSingleImage(str(userSettingsDir), Path(factoryDir), str(recDir), exposure,
                                         nrImgs))
