@@ -27,6 +27,8 @@ async def run_example_recordSingleImage(
         print("using .cu3c file as calibration instead of factory dir...")
         calibFile = cuvis.SessionFile(factoryDir)
         calibration = cuvis.Calibration(calibFile)
+    else:
+        raise ValueError('Unrecognized file format')
     processingContext = cuvis.ProcessingContext(calibration)
     acquisitionContext = cuvis.AcquisitionContext(calibration)
 

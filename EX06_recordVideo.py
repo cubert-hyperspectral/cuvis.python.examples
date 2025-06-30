@@ -24,6 +24,8 @@ def run_example_recordVideo(userSettingsDir: str,
         print("using .cu3c file as calibration instead of factory dir...")
         calibFile = cuvis.SessionFile(factoryDir)
         calibration = cuvis.Calibration(calibFile)
+    else:
+        raise ValueError('Unrecognized file format')
 
     print("loading acquisition context...")
     acquisitionContext = cuvis.AcquisitionContext(calibration)
