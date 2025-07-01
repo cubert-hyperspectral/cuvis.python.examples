@@ -18,18 +18,25 @@ async def worker_collect_mesu_task(workerContainer: cuvis.WorkerResult):
             workerContainer.mesu.session_info.sequence_number))
 
 
-async def run_example_recordVideo(userSettingsDir,
-                                  factoryDir,
-                                  recDir,
-                                  exposure,
-                                  autoExp,
-                                  fps):
+async def run_example_recordVideo(userSettingsDir: str,
+                                  factoryDir: Path,
+                                  recDir: str,
+                                  exposure: int,
+                                  autoExp: bool,
+                                  fps: float):
     print("loading user settings...")
     cuvis.init(userSettingsDir)
     cuvis.set_log_level("info")
 
     print("loading calibration (factory)...")
-    calibration = cuvis.Calibration(factoryDir)
+    if (factoryDir.is_dir()):
+        calibration = cuvis.Calibration(factoryDir)
+    elif (factoryDir.suffix == '.cu3c'):
+        print("using .cu3c file as calibration instead of factory dir...")
+        calibFile = cuvis.SessionFile(factoryDir)
+        calibration = cuvis.Calibration(calibFile)
+    else:
+        raise ValueError('Unrecognized file format')
 
     print("loading acquisition context...")
     acquisitionContext = cuvis.AcquisitionContext(calibration)
@@ -127,7 +134,8 @@ if __name__ == "__main__":
     if userSettingsDir.strip().lower() in ["", "default"]:
         userSettingsDir = loc_settings
 
-    factoryDir = input("Factory directory (default: {}): ".format(loc_factory))
+    factoryDir = input(
+        "Factory directory (default: {}) or .cu3c file: ".format(loc_factory))
     if factoryDir.strip().lower() in ["", "default"]:
         factoryDir = loc_factory
 
@@ -152,7 +160,7 @@ if __name__ == "__main__":
         "Target frames per second (fps) (default: {}): ".format(loc_fps))
     if fps.strip().lower() in ["", "default"]:
         fps = loc_fps
-    fps = int(fps)
+    fps = float(fps)
 
-    a.run(run_example_recordVideo(str(userSettingsDir), str(factoryDir), str(recDir), exposure,
+    a.run(run_example_recordVideo(str(userSettingsDir), Path(factoryDir), str(recDir), exposure,
                                   autoExp, fps))
