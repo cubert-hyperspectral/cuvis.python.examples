@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings version="2.4.2"
+	xmlns="http://cubert-gmbh.de/core/settings.xsd">
+
+	<!-- Core & Touch settings -->
+	<property id="view_size_gallery" value="100" />
+	<property id="view_size_gallery_preview" value="0.1" />
+
+	<property id="soap_io_chunk" value="false" />
+	<property id="soap_zlib" value="false" />
+	<property id="soap_worker_thd_cnt" value="4" />
+	<property id="soap_package_queue" value="100" />
+
+	<!-- do not allow for packed image transmission between camera and minipc2 -->
+	<property id="allow_packed_transmission" value="true" />
+
+	<!-- Enable compression in .cu3s and .cu3 measurement files when saving videos and snapshots -->
+	<property id="file_compression" value="true" />
+
+	<!-- If enabled, this setting attempts to correct for integration time differences between 
+	white reference and later measurements in Reflectance mode. 
+	Does not take into account non-linearities of the sensor! Use with care. -->
+	<property id="correct_ref_integration_time" value="false" />
+
+	<!-- Set general brightness factor for normalized view generation.
+		Between [0.01 - 0.99] - Higher values brighten the image more. Does not affect spectra. -->
+	<property id="normalization_adjustment_factor" value="0.5" />
+
+
+	<!-- Profiling settings -->
+	<!-- Enabling this will cause profiling files to be generated (by default to C:\ProgramData\cuvis\).
+		 Enable this if prompted by support. -->
+	<property id="enable_measurement_profiling" value="false" />
+
+	<!-- Performance settings -->
+
+	<!-- Force version of cube processing algorithm: "forward" / "lut" -->
+	<property id="force_cubalize_algorithm" value="lut" />
+	<!-- Force cube processing device. Run on CPU: "host" | Run on GPU: "cuda" -->
+	<property id="force_gpu_mode" value="cuda" />
+	<!-- Select userplugin processing device. Run on CPU: "host" | Run on GPU: "cuda" -->
+	<property id="userplugins_computation_target_device" value="cuda" />
+
+	<!-- CUDA Settings       - Only apply when "force_gpu_mode" is set to "cuda" -->
+	<!-- Settings for GPU memory usage:
+		These settings determine the memory usage behavior of Cuvis (Core, exporter, etc).
+		If less than the minimum setting amount is available, Cuvis will exit with an error.
+		If more memory than the maximum setting is available, Cuvis will attempt to use at most the value defined by this setting.
+		In all other cases, the auto_ratio setting applies:
+		Cuvis will attempt to use at most: [total system memory size] * [auto_ratio]
+		
+		This applies to both device memory (VRAM of the GPU) and to host memory (CPU / RAM). -->
+	<property id="cuda_device_memory_minimum_gb" value="1.5" />
+	<property id="cuda_device_memory_maximum_gb" value="7.5" />
+	<property id="cuda_device_memory_auto_ratio" value="0.8" />
+
+	<property id="cuda_host_memory_minimum_gb" value="4.0" />
+	<property id="cuda_host_memory_maximum_gb" value="12.0" />
+	<property id="cuda_host_memory_auto_ratio" value="0.6" />
+
+	<!-- Prefetching of cube after cube processing (used only in GPU processing) -->
+	<property id="enable_cube_prefetching" value="false" />
+
+	
+	<property id="timestamp_corruption_reset_camera" value="false" />
+
+
+	<!-- VIMBA Settings -->
+
+	<!-- enables a throughput limit for Vimba USB cameras. Can help with skipped frames. Not limit when disabled. -->
+	<property id="vimba_throughputlimit" value="350000000" />
+
+	<!-- Thread settings -->
+	<!-- Threads within CUVIS sorted into different groups:
+		camera_driver: Threads that are created and run within the respective device manufacturers SDK (eg. Baumer)
+		frame_time_critical: Threads around camera triggering and frame fetching
+		high_priority: Other threads between steps: camera trigger -> data leaves acquisition context
+		processing: Anything that runs processor intensive workloads on measurement data
+		viewer: Threads that work on measurement data within the Viewer and View Exporters
+		device: Anything to do with non-time-critical device communication (eg. set integration time)
+		exporter: IO intensive processes within exporters
+		other: All the rest
+
+		On Linux: priority values are directly used as input here. (eg. for SCHED_FIFO between lowest 0 to 99 highest)
+		On Windows: priority values range between 0 - 5 inclusive. 5 is highest, 0 is lowest prio
+	-->
+	<property id="camera_driver_critical_thread_priority" value="5" />
+	<property id="frame_time_critical_thread_priority" value="5" />
+	<property id="high_priority_processing_thread_priority" value="4" />
+	<property id="exporter_thread_priority" value="4" />
+	<property id="processing_thread_priority" value="3" />
+	<property id="viewer_thread_priority" value="2" />
+	<property id="other_thread_priority" value="2" />
+	<property id="device_communication_thread_priority" value="1" />
+
+	<!-- Thread core affinity settings.
+		Select on which CPU cores the different thread groups are scheduled.
+		If left empty, all cores are utilized.
+		Valid values are eg. "0", "2", "1,2", "0, 3, 5" and "1-7"
+		<property id="camera_driver_critical_thread_core_affinity" value="" />
+		<property id="frame_time_critical_thread_core_affinity" value="" />
+		<property id="high_priority_processing_thread_core_affinity" value="" />
+		<property id="processing_thread_core_affinity" value="" />
+		<property id="viewer_thread_core_affinity" value="" />
+		<property id="other_thread_core_affinity" value="" />
+		<property id="device_communication_thread_core_affinity" value="" />
+		<property id="exporter_thread_core_affinity" value="" />
+	-->
+
+	<!-- Thread scheduler settings (ONLY VALID ON LINUX)
+		Per thread group control over used scheduler.
+		Valid inputs: SCHED_OTHER, SCHED_BATCH, SCHED_RR, SCHED_FIFO, SCHED_IDLE
+		<property id="camera_driver_thread_scheduler" value="SCHED_RR" />
+		<property id="frame_time_critical_thread_scheduler" value="SCHED_RR" />
+		<property id="high_priority_processing_thread_scheduler" value="SCHED_RR" />
+		<property id="processing_thread_scheduler" value="SCHED_OTHER" />
+		<property id="viewer_thread_scheduler" value="SCHED_OTHER" />
+		<property id="other_thread_scheduler" value="SCHED_OTHER" />
+		<property id="device_communication_thread_scheduler" value="SCHED_OTHER" />
+		<property id="exporter_thread_scheduler" value="SCHED_OTHER" />
+	-->
+
+	<!-- These settings control the size of thread pools used in different parts of cuvis.
+		background_workers: Pool for important and frequent low intensity tasks
+		processing: Pool for all tasks to do with measurement processing (the highest CPU load)
+		device_acquisition: Threads running in frame-time-critical domain (Before leaving the acquisition context)
+		viewer: Threads used for Userplugin calculation and view generation (Cube -> RGB image)
+	-->
+
+	<property id="background_workers_thread_count" value="4" />
+	<property id="processing_thread_count" value="8" />
+	<property id="device_acquisition_thread_count" value="4" />
+	<property id="viewer_thread_count" value="4" />
+
+</settings>

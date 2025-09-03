@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings version="2.4.2" xmlns="http://cubert-gmbh.de/core/settings.xsd">
+	<!-- Port for soap -->
+	<property id="soap_port" value="9392" />
+	
+	<!--Override init file verification -->
+	<property id="no_valid_init" value="true" />
+	<!-- GPS properties -->
+	<!--
+	<property id="gps_port" value="" />
+	<property id="gps_baud" value="4800" />
+	<property id="gps_databits" value="8" />
+	<property id="gps_stopbits" value="0" />
+	<property id="gps_parity" value="0" />
+	-->
+	<!-- if true, auto exposure cannot set exposure time above a given limit. Said limit is set by auto_exposure_exposure_limit-->	
+	<property id="apply_auto_exposure_exposure_limit" value="true"/>
+	<!-- limit for exposure set by auto exposure. See apply_auto_exposure_exposure_limit -->
+	<property id="auto_exposure_exposure_limit" value="500.0"/>	
+
+	<!-- some cameras support sensor-synchronization monitoring, the value is the maximum allowed desync in milliseconds. Default: 100 ms -->
+	<property id="max_sensor_desync" value="5"/>
+	
+	
+	<!-- Session File writing settings  -->
+	<!-- How many measurements can be kept in memory before measurements are dropped. -->
+	<property id="worker_mandatory_buffer_size" value="60" />
+	<!-- If measurements arrive out of order in the saving process, how many are kept in memory before dropping. -->
+	<property id="worker_mandatory_cache_size" value="40" />
+	<!-- How long the saving process waits for a missing measurement if it has measurements to write that would come after it -->
+	<property id="worker_mandatory_buffer_max_time_ms" value="1000" />
+
+	<!-- Processing (worker) options --> 
+	
+	<!-- Number of seconds between statistics output --> 
+	<property id="worker_statistics_interval" value="10" />
+	<!-- Number of measurements that can be simultaneously processed (mandatory tasks) -->
+	<property id="worker_mandatory_threads" value="2" />
+	<!-- Number of measurements that can be simultaneously processed (supplementary tasks) -->
+	<property id="worker_supplementary_threads" value="2" />
+	<!-- Size of the result queue for the worker --> 
+	<property id="worker_output_queue_size" value="5" />
+	<!-- Allow the worker to skip processing measurements if the system is overloaded --> 
+	<property id="worker_allow_skip_measurements" value="false" />
+	<!-- Allow the worker to drop/delete results if the output queue is full --> 
+	<property id="worker_allow_drop_results" value="true" />
+	
+	<!-- limit the histogram calculation to cubes of a certain total size -->
+	<!-- <property id="histogram_max_sz" value="2000000"/> -->
+
+	<!-- When to start a new video file during recording -->
+	<property id="sequence_number_overflow" value="10000" />
+
+</settings>
