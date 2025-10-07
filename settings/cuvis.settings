@@ -37,9 +37,9 @@
 	<!-- Force version of cube processing algorithm: "forward" / "lut" -->
 	<property id="force_cubalize_algorithm" value="lut" />
 	<!-- Force cube processing device. Run on CPU: "host" | Run on GPU: "cuda" -->
-	<property id="force_gpu_mode" value="cuda" />
+	<property id="force_gpu_mode" value="host" />
 	<!-- Select userplugin processing device. Run on CPU: "host" | Run on GPU: "cuda" -->
-	<property id="userplugins_computation_target_device" value="cuda" />
+	<property id="userplugins_computation_target_device" value="host" />
 
 	<!-- CUDA Settings       - Only apply when "force_gpu_mode" is set to "cuda" -->
 	<!-- Settings for GPU memory usage:
