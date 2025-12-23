@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<userplugin xmlns="http://cubert-gmbh.de/user/plugin/userplugin.xsd">
+	<configuration name="MONO" citation="" plugin_author="Cubert" plugin_version="1.0.1" required_engine_version="2.1.0">
+
+		<comment>A simple monochromatic viewer with averaging over a central wavelength.</comment>
+
+		<input id="Normalize" type="scalar">0.75</input>
+		<input id="Center_WL" type="scalar" min="300" max="1200" tickFreq="1">500</input>
+		<input id="View_Width_nm" type="scalar" min="1" max="1500">5</input>
+
+		<evaluate id="WLWidthHalf">
+			<operator type="divide">
+				<variable ref="View_Width_nm"/>
+				<value>2</value>
+			</operator>
+		</evaluate>
+		<evaluate id="WLMin">
+			<operator type="subtract">
+				<variable ref="Center_WL"/>
+				<variable ref="WLWidthHalf"/>
+			</operator>
+		</evaluate>
+			
+		<evaluate id="WLMax">
+			<operator type="add">
+				<variable ref="Center_WL"/>
+				<variable ref="WLWidthHalf"/>
+			</operator>
+		</evaluate>
+
+		<gray min="0" max="255">
+			<fastmono wl_min="WLMin" wl_max="WLMax" normalize="Normalize"></fastmono>
+		</gray>
+	</configuration>
+</userplugin>

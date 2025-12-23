@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<userplugin xmlns="http://cubert-gmbh.de/user/plugin/userplugin.xsd">
+  <configuration name="CIR" citation="CUBERT" plugin_author="Cubert" plugin_version="2.0.2" required_engine_version="3.2.0">
+	
+	<input id="RedMin" type="wavelength">780</input>
+	<input id="RedMax" type="wavelength">1000</input>
+	<input id="GreenMin" type="wavelength">630</input>
+	<input id="GreenMax" type="wavelength">700</input>
+	<input id="BlueMin" type="wavelength">490</input>
+	<input id="BlueMax" type="wavelength">560</input>
+	<input id="normalize" type="scalar">0.75</input>
+	 
+    <output_image show="true" id="CIR">
+      <fast_rgb red_min="RedMin" red_max="RedMax" green_min="GreenMin" green_max="GreenMax" blue_min="BlueMin" blue_max="BlueMax" normalization="normalize">
+			<cube />
+		</fast_rgb>
+	</output_image>
+	
+  </configuration>
+</userplugin>

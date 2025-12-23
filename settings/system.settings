@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings version="2.4.2" xmlns="http://cubert-gmbh.de/core/settings.xsd">	
+	<!--Limit FPS for display purposes to this value per second -->
+	<property id="view_fps" value="99" />
+	<property id="view_bandwidth" value="10" />
+	<property id="soap_jpg_quality" value="90" />
+	<!-- Minimum disk space available for exporter (default 5368709120 bytes)-->
+	<property id="exporter_min_disk_space" value="5368709120" />
+	<!-- further tweaking options --> 
+	<property id="wait_time_integration_time_offset" value="300" />
+	<property id="wait_time_integration_time_factor" value="1" />
+	<property id="wait_time_average_count_offset" value="0" />
+</settings>

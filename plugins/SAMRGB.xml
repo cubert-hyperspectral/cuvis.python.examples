@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<userplugin xmlns="http://cubert-gmbh.de/user/plugin/userplugin.xsd">
+  <configuration name="Spectral_Angle_RGB" citation="SAM" plugin_author="Cubert" plugin_version="2.0.2" required_engine_version="3.2.0">
+	
+	<input id="reference_cor" type="spectrum">
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1;
+		1;1;1;1;1;1;1;1;1;1
+	 </input>
+		
+	<input id="min_obj_sz" type="scalar">2</input>
+	<input id="SAM_Thresh" type="scalar" min="0" max="1">0.9</input>
+	<input id="SAM_Min" type="wavelength">400</input>
+	<input id="SAM_Max" type="wavelength">1550</input>
+
+	<input id="RedMin" type="wavelength">590</input>
+	<input id="RedMax" type="wavelength">700</input>
+	<input id="GreenMin" type="wavelength">500</input>
+	<input id="GreenMax" type="wavelength">570</input>
+	<input id="BlueMin" type="wavelength">440</input>
+	<input id="BlueMax" type="wavelength">500</input>
+	<input id="Normalize" type="scalar">0.75</input>
+
+	<evaluate id="sam">
+		<correlation method="spectral_angle" match_label="1" threshold_ref="SAM_Thresh" 
+			min_result_size="min_obj_sz" nomatch_label="0" ref_min="SAM_Min" ref_max="SAM_Max"
+			spectrum_ref="reference_cor">
+			<cube />
+		</correlation>
+	</evaluate>
+
+	<evaluate id="red">
+		<fastmono wl_min="RedMin" wl_max="RedMax" normalize="Normalize"></fastmono>
+	</evaluate>
+	<evaluate id="green">
+		<fastmono wl_min="GreenMin" wl_max="GreenMax" normalize="Normalize"></fastmono>
+	</evaluate>
+	<evaluate id="blue">
+		<fastmono wl_min="BlueMin" wl_max="BlueMax" normalize="Normalize"></fastmono>
+	</evaluate>
+	
+	<R>
+		<select threshold="0.5">
+			<variable ref="sam"></variable>
+			<variable ref="red"></variable>
+			<value>255</value>
+		</select>
+	</R>
+	<G>
+		<select threshold="0.5">
+			<variable ref="sam"></variable>
+			<variable ref="green"></variable>
+			<value>0</value>
+		</select>
+	</G>
+	<B>
+		<select threshold="0.5">
+			<variable ref="sam"></variable>
+			<variable ref="blue"></variable>
+			<value>0</value>
+		</select>
+	</B>
+	
+  </configuration>
+</userplugin>

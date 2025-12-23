@@ -1,2 +1,5 @@
 cuvis
 matplotlib
+notebook
+ipympl
+ipywidgets

@@ -1,3 +1,14 @@
 /.venv
 /.venv39
 /exit
+*.log
+*.cu3s
+.history/*
+output/
+save/
+.ipynb_checkpoints/
+tiff_export
+pansharpen_export/
+view_export
+envi_export/
+cube_export/

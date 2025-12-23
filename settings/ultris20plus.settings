@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The Lantana1 hardware and HW-performance settings settings. -->
+<settings version="2.4.2" xmlns="http://cubert-gmbh.de/core/settings.xsd">
+	<!-- packet delay setting. Recommended value: 0 -->
+	<property id="ULTRIS20P_SPEC_GevSCPD" value="0"></property>
+	<!-- frame transmission delay setting. Recommended value: 0 -->
+	<property id="ULTRIS20P_SPEC_GevSCFTD" value="0"></property>
+	<!-- steam driver model (hardware-specific) use: Socket or Driver or leave tag away to utilize recommended default -->
+	<!--<property id="ULTRIS20P_SPEC_StreamDriverModel" value="Socket"></property>-->
+	<!-- force a packet size, leave away for auto-negotiation (recommended) -->
+	<!--<property id="ULTRIS20P_SPEC_ForcedPacketSize" value="32000"></property>-->
+	<!-- the max. number of images to be pre-fetched. Recommended value: 8 -->
+	<property id="ULTRIS20P_SPEC_DeviceBufferCount" value="8"></property>
+	<property id="ULTRIS20P_DistanceCalibration_SuperResolutionFactor" value="4"></property>
+	<property id="ULTRIS20P_DistanceCalibration_Zoom" value="2"></property>
+	<!-- packet delay setting. Recommended value: 0 -->
+	<property id="ULTRIS20P_PAN_GevSCPD" value="0"></property>
+	<!-- frame transmission delay setting. Recommended value: 0 -->
+	<property id="ULTRIS20P_PAN_GevSCFTD" value="0"></property>
+	<!-- steam driver model (hardware-specific) use: Socket or Driver or leave tag away to utilize recommended default -->
+	<!--<property id="ULTRIS20P_SPEC_StreamDriverModel" value="Socket"></property>-->
+	<!-- force a packet size, leave away for auto-negotiation (recommended) -->
+	<!--<property id="ULTRIS20P_SPEC_ForcedPacketSize" value="32000"></property>-->
+	<!-- the max. number of images to be pre-fetched. Recommended value: 8 -->
+	<property id="ULTRIS20P_PAN_DeviceBufferCount" value="8"></property>
+</settings>
