@@ -41,6 +41,10 @@ https://www.python.org/downloads/source/
 or `sudo apt install python3 python3-venv python3-pip`
 2. Download the latest version of Cuvis SDK or Cuvis Full for your Ubuntu machine [here](https://cloud.cubert-gmbh.de/s/qpxkyWkycrmBK9m?path=%2F).\
 If you are using an arm64 system, check the additional instructions in the Application notes document [here](https://cloud.cubert-gmbh.de/s/qpxkyWkycrmBK9m?dir=undefined&path=%2FCuvis%203.4.0&openfile=3928) before continuing.
+
+`While the Cuvis SDK is available for ARM, we do not provide a precompiled Python wrapper for this architecture. 
+You will need to compile the wrapper manually from the source provided in the SDK.`
+
     - Install the cuviscommon package first via `sudo apt install ./cuviscommon_X.X.X-X.deb` (installs external dependencies, internet connection necessary)
     - Install the rest of the .deb files in the same way.
 
