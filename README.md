@@ -6,7 +6,7 @@
 
 To get the exampels running, first set up a project directory and clone this git repository.
 
-For running some of the examples, you have to use sample data (provided [here](https://drive.google.com/drive/folders/1Cjb0v_a2p1cCmhKH8w2OuRtnhXCJGz61?usp=sharing)).
+For running some of the examples, you have to use sample data (provided [here](https://cloud.cubert-gmbh.de/s/SDKSampleData)).
 
 ### Windows
 
