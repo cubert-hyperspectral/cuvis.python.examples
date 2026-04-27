@@ -1,20 +1,91 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <userplugin xmlns="http://cubert-gmbh.de/user/plugin/userplugin.xsd">
-  <configuration name="CIR" citation="CUBERT" plugin_author="Cubert" plugin_version="2.0.2" required_engine_version="3.2.0">
-	
-	<input id="RedMin" type="wavelength">780</input>
-	<input id="RedMax" type="wavelength">1000</input>
-	<input id="GreenMin" type="wavelength">630</input>
-	<input id="GreenMax" type="wavelength">700</input>
-	<input id="BlueMin" type="wavelength">490</input>
-	<input id="BlueMax" type="wavelength">560</input>
-	<input id="normalize" type="scalar">0.75</input>
-	 
-    <output_image show="true" id="CIR">
-      <fast_rgb red_min="RedMin" red_max="RedMax" green_min="GreenMin" green_max="GreenMax" blue_min="BlueMin" blue_max="BlueMax" normalization="normalize">
-			<cube />
-		</fast_rgb>
-	</output_image>
-	
+  <configuration name="CIR" citation="CUBERT" plugin_author="Cubert" plugin_version="1.0.0" required_engine_version="3.2.0">
+    <comment>
+      Color Infrared (CIR) View with adjustable bandwidths using manual fastmono channels:
+      ---
+      Red   := avg(NIR ± Width/2)
+      Green := avg(Red ± Width/2)
+      Blue  := avg(Green ± Width/2)
+    </comment>
+
+    <input id="NIR_WL" type="scalar" min="300" max="1200" tickFreq="1">850</input>
+    <input id="Red_WL" type="scalar" min="300" max="1200" tickFreq="1">660</input>
+    <input id="Green_WL" type="scalar" min="300" max="1200" tickFreq="1">550</input>
+    <input id="Width" type="scalar" min="1" max="200">20</input>
+    <input id="Normalize" type="scalar">0.75</input>
+
+    <!-- Calculate half width -->
+    <evaluate id="HalfWidth">
+      <operator type="divide">
+        <variable ref="Width"/>
+        <value>2</value>
+      </operator>
+    </evaluate>
+
+    <!-- NIR bounds -->
+    <evaluate id="NIR_Min">
+      <operator type="subtract">
+        <variable ref="NIR_WL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+    <evaluate id="NIR_Max">
+      <operator type="add">
+        <variable ref="NIR_WL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+
+    <!-- Red bounds -->
+    <evaluate id="Red_Min">
+      <operator type="subtract">
+        <variable ref="Red_WL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+    <evaluate id="Red_Max">
+      <operator type="add">
+        <variable ref="Red_WL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+
+    <!-- Green bounds -->
+    <evaluate id="Green_Min">
+      <operator type="subtract">
+        <variable ref="Green_WL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+    <evaluate id="Green_Max">
+      <operator type="add">
+        <variable ref="Green_WL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+
+    <!-- Evaluate channels -->
+    <evaluate id="Red">
+      <fastmono wl_min="NIR_Min" wl_max="NIR_Max" normalize="Normalize"/>
+    </evaluate>
+    <evaluate id="Green">
+      <fastmono wl_min="Red_Min" wl_max="Red_Max" normalize="Normalize"/>
+    </evaluate>
+    <evaluate id="Blue">
+      <fastmono wl_min="Green_Min" wl_max="Green_Max" normalize="Normalize"/>
+    </evaluate>
+
+    <!-- Output RGB using CIR assignment -->
+    <R>
+      <variable ref="Red"/>
+    </R>
+    <G>
+      <variable ref="Green"/>
+    </G>
+    <B>
+      <variable ref="Blue"/>
+    </B>
+
   </configuration>
 </userplugin>

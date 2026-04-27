@@ -1,82 +1,137 @@
-<?xml version="1.0"?>
 <userplugin xmlns="http://cubert-gmbh.de/user/plugin/userplugin.xsd">
-  <configuration name="Spectral_Angle_RGB" citation="SAM" plugin_author="Cubert" plugin_version="2.0.2" required_engine_version="3.2.0">
-	
-	<input id="reference_cor" type="spectrum">
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1;
-		1;1;1;1;1;1;1;1;1;1
-	 </input>
-		
-	<input id="min_obj_sz" type="scalar">2</input>
-	<input id="SAM_Thresh" type="scalar" min="0" max="1">0.9</input>
-	<input id="SAM_Min" type="wavelength">400</input>
-	<input id="SAM_Max" type="wavelength">1550</input>
+  <configuration name="SAMRGB" citation="CUBERT" plugin_author="Cubert" plugin_version="1.0.1" required_engine_version="3.2.0">
+    <comment>
+      Spectral Angle Mapper (SAM) Masked RGB View:
+      ---
+      RGB := avg(RedWL, GreenWL, BlueWL ± Width/2), masked by SAM match
+    </comment>
 
-	<input id="RedMin" type="wavelength">590</input>
-	<input id="RedMax" type="wavelength">700</input>
-	<input id="GreenMin" type="wavelength">500</input>
-	<input id="GreenMax" type="wavelength">570</input>
-	<input id="BlueMin" type="wavelength">440</input>
-	<input id="BlueMax" type="wavelength">500</input>
-	<input id="Normalize" type="scalar">0.75</input>
+    <input id="ReferenceSpectrum" type="spectrum">
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0
+    </input>
 
-	<evaluate id="sam">
-		<correlation method="spectral_angle" match_label="1" threshold_ref="SAM_Thresh" 
-			min_result_size="min_obj_sz" nomatch_label="0" ref_min="SAM_Min" ref_max="SAM_Max"
-			spectrum_ref="reference_cor">
-			<cube />
-		</correlation>
-	</evaluate>
+    <input id="SAM_Threshold" type="scalar" min="0" max="1">0.95</input>
+    <input id="SAM_MinWL" type="wavelength">350</input>
+    <input id="SAM_MaxWL" type="wavelength">1700</input>
+    <input id="SAM_min_obj_sz" type="scalar">2</input>
 
-	<evaluate id="red">
-		<fastmono wl_min="RedMin" wl_max="RedMax" normalize="Normalize"></fastmono>
-	</evaluate>
-	<evaluate id="green">
-		<fastmono wl_min="GreenMin" wl_max="GreenMax" normalize="Normalize"></fastmono>
-	</evaluate>
-	<evaluate id="blue">
-		<fastmono wl_min="BlueMin" wl_max="BlueMax" normalize="Normalize"></fastmono>
-	</evaluate>
-	
-	<R>
-		<select threshold="0.5">
-			<variable ref="sam"></variable>
-			<variable ref="red"></variable>
-			<value>255</value>
-		</select>
-	</R>
-	<G>
-		<select threshold="0.5">
-			<variable ref="sam"></variable>
-			<variable ref="green"></variable>
-			<value>0</value>
-		</select>
-	</G>
-	<B>
-		<select threshold="0.5">
-			<variable ref="sam"></variable>
-			<variable ref="blue"></variable>
-			<value>0</value>
-		</select>
-	</B>
-	
+    <input id="RedWL" type="scalar" min="350" max="1700" tickFreq="1">650</input>
+    <input id="GreenWL" type="scalar" min="350" max="1700" tickFreq="1">550</input>
+    <input id="BlueWL" type="scalar" min="350" max="1700" tickFreq="1">470</input>
+    <input id="Width" type="scalar" min="1" max="200">20</input>
+    <input id="Normalize" type="scalar">0.75</input>
+
+    <evaluate id="HalfWidth">
+      <operator type="divide">
+        <variable ref="Width"/>
+        <value>2</value>
+      </operator>
+    </evaluate>
+
+    <evaluate id="RedMin">
+      <operator type="subtract">
+        <variable ref="RedWL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+    <evaluate id="RedMax">
+      <operator type="add">
+        <variable ref="RedWL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+
+    <evaluate id="GreenMin">
+      <operator type="subtract">
+        <variable ref="GreenWL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+    <evaluate id="GreenMax">
+      <operator type="add">
+        <variable ref="GreenWL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+
+    <evaluate id="BlueMin">
+      <operator type="subtract">
+        <variable ref="BlueWL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+    <evaluate id="BlueMax">
+      <operator type="add">
+        <variable ref="BlueWL"/>
+        <variable ref="HalfWidth"/>
+      </operator>
+    </evaluate>
+
+    <evaluate id="RedChan">
+      <fastmono wl_min="RedMin" wl_max="RedMax" normalize="Normalize"/>
+    </evaluate>
+    <evaluate id="GreenChan">
+      <fastmono wl_min="GreenMin" wl_max="GreenMax" normalize="Normalize"/>
+    </evaluate>
+    <evaluate id="BlueChan">
+      <fastmono wl_min="BlueMin" wl_max="BlueMax" normalize="Normalize"/>
+    </evaluate>
+
+    <evaluate id="SAM_Mask">
+      <correlation method="spectral_angle" match_label="1" nomatch_label="0"
+                   min_result_size="SAM_min_obj_sz"
+                   threshold_ref="SAM_Threshold" spectrum_ref="ReferenceSpectrum"
+                   ref_min="SAM_MinWL" ref_max="SAM_MaxWL">
+        <cube/>
+      </correlation>
+    </evaluate>
+
+    <evaluate id="MaskedRed">
+      <select threshold="0.5">
+        <variable ref="SAM_Mask"/>
+        <variable ref="RedChan"/>
+        <value>255</value>
+      </select>
+    </evaluate>
+    <evaluate id="MaskedGreen">
+      <select threshold="0.5">
+        <variable ref="SAM_Mask"/>
+        <variable ref="GreenChan"/>
+        <value>0</value>
+      </select>
+    </evaluate>
+    <evaluate id="MaskedBlue">
+      <select threshold="0.5">
+        <variable ref="SAM_Mask"/>
+        <variable ref="BlueChan"/>
+        <value>0</value>
+      </select>
+    </evaluate>
+
+    <output_image show="true">
+      <R><variable ref="MaskedRed"/></R>
+      <G><variable ref="MaskedGreen"/></G>
+      <B><variable ref="MaskedBlue"/></B>
+    </output_image>
+
   </configuration>
 </userplugin>

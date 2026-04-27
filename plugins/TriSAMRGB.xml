@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<userplugin xmlns="http://cubert-gmbh.de/user/plugin/userplugin.xsd">
+  <configuration name="Triple_SAM_RGB" citation="SAM" plugin_author="Cubert" plugin_version="2.1.0" required_engine_version="3.2.0">
+	
+	<input id="reference_R" type="spectrum">
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0
+	 </input>
+	<input id="reference_G" type="spectrum">
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0
+	 </input>
+	<input id="reference_B" type="spectrum">
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0;
+		0;0;0;0;0;0;0;0;0;0
+	 </input>
+		
+	<input id="SAM_min_obj_sz_R" type="scalar">2</input>
+	<input id="SAM_R_Thresh" type="scalar" min="0" max="1">0.9</input>
+	<input id="SAM_R_Low" type="wavelength">350</input>
+	<input id="SAM_R_High" type="wavelength">1700</input>
+	<input id="SAM_min_obj_sz_G" type="scalar">2</input>
+	<input id="SAM_G_Thresh" type="scalar" min="0" max="1">0.9</input>
+	<input id="SAM_G_Low" type="wavelength">350</input>
+	<input id="SAM_G_High" type="wavelength">1700</input>
+	<input id="SAM_min_obj_sz_B" type="scalar">2</input>
+	<input id="SAM_B_Thresh" type="scalar" min="0" max="1">0.9</input>
+	<input id="SAM_B_Low" type="wavelength">350</input>
+	<input id="SAM_B_High" type="wavelength">1700</input>
+	<input id="RedWL" type="scalar" min="350" max="1700" tickFreq="1">650</input>
+	<input id="GreenWL" type="scalar" min="350" max="1700" tickFreq="1">550</input>
+	<input id="BlueWL" type="scalar" min="350" max="1700" tickFreq="1">470</input>
+	<input id="Width" type="scalar" min="1" max="200">20</input>
+	<input id="Normalize" type="scalar">0.75</input>
+
+	<evaluate id="sam_R">
+		<correlation method="spectral_angle" match_label="1" threshold_ref="SAM_R_Thresh" 
+			min_result_size="SAM_min_obj_sz_R" nomatch_label="0" ref_min="SAM_R_Low" ref_max="SAM_R_High"
+			spectrum_ref="reference_R">
+			<cube />
+		</correlation>
+	</evaluate>
+	<evaluate id="sam_G">
+		<correlation method="spectral_angle" match_label="1" threshold_ref="SAM_G_Thresh" 
+			min_result_size="SAM_min_obj_sz_G" nomatch_label="0" ref_min="SAM_G_Low" ref_max="SAM_G_High"
+			spectrum_ref="reference_G">
+			<cube />
+		</correlation>
+	</evaluate>
+	<evaluate id="sam_B">
+		<correlation method="spectral_angle" match_label="1" threshold_ref="SAM_B_Thresh" 
+			min_result_size="SAM_min_obj_sz_B" nomatch_label="0" ref_min="SAM_B_Low" ref_max="SAM_B_High"
+			spectrum_ref="reference_B">
+			<cube />
+		</correlation>
+	</evaluate>
+
+	<evaluate id="HalfWidth">
+		<operator type="divide">
+			<variable ref="Width"/>
+			<value>2</value>
+		</operator>
+	</evaluate>
+
+	<evaluate id="RedLow">
+		<operator type="subtract">
+			<variable ref="RedWL"/>
+			<variable ref="HalfWidth"/>
+		</operator>
+	</evaluate>
+	<evaluate id="RedHigh">
+		<operator type="add">
+			<variable ref="RedWL"/>
+			<variable ref="HalfWidth"/>
+		</operator>
+	</evaluate>
+
+	<evaluate id="GreenLow">
+		<operator type="subtract">
+			<variable ref="GreenWL"/>
+			<variable ref="HalfWidth"/>
+		</operator>
+	</evaluate>
+	<evaluate id="GreenHigh">
+		<operator type="add">
+			<variable ref="GreenWL"/>
+			<variable ref="HalfWidth"/>
+		</operator>
+	</evaluate>
+
+	<evaluate id="BlueLow">
+		<operator type="subtract">
+			<variable ref="BlueWL"/>
+			<variable ref="HalfWidth"/>
+		</operator>
+	</evaluate>
+	<evaluate id="BlueHigh">
+		<operator type="add">
+			<variable ref="BlueWL"/>
+			<variable ref="HalfWidth"/>
+		</operator>
+	</evaluate>
+
+	<evaluate id="red">
+		<fastmono wl_min="RedLow" wl_max="RedHigh" normalize="Normalize"></fastmono>
+	</evaluate>
+	<evaluate id="green">
+		<fastmono wl_min="GreenLow" wl_max="GreenHigh" normalize="Normalize"></fastmono>
+	</evaluate>
+	<evaluate id="blue">
+		<fastmono wl_min="BlueLow" wl_max="BlueHigh" normalize="Normalize"></fastmono>
+	</evaluate>
+	
+	<R>
+		<select threshold="0.5">
+			<variable ref="sam_R"></variable>
+			<select threshold="0.5">
+				<variable ref="sam_G"></variable>
+				<select threshold="0.5">
+					<variable ref="sam_B"></variable>
+					<variable ref="red"></variable>
+					<value>0</value>
+				</select>
+				<value>0</value>
+			</select>
+			<value>255</value>
+		</select>
+	</R>
+	<G>
+		<select threshold="0.5">
+			<variable ref="sam_G"></variable>
+			<select threshold="0.5">
+				<variable ref="sam_R"></variable>
+				<select threshold="0.5">
+					<variable ref="sam_B"></variable>
+					<variable ref="green"></variable>
+					<value>0</value>
+				</select>
+				<value>0</value>
+			</select>
+			<value>255</value>
+		</select>
+	</G>
+	<B>
+		<select threshold="0.5">
+			<variable ref="sam_B"></variable>
+			<select threshold="0.5">
+				<variable ref="sam_R"></variable>
+				<select threshold="0.5">
+					<variable ref="sam_G"></variable>
+					<variable ref="blue"></variable>
+					<value>0</value>
+				</select>
+				<value>0</value>
+			</select>
+			<value>255</value>
+		</select>
+	</B>
+	
+  </configuration>
+</userplugin>
