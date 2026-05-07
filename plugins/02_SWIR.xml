@@ -58,11 +58,26 @@
       </operator>
     </evaluate>
 
-	<output_image show="true" id="SWIR">
-		<fast_rgb red_min="RedMin" red_max="RedMax" green_min="GreenMin" green_max="GreenMax" blue_min="BlueMin" blue_max="BlueMax" normalization="Normalize">
-			<cube/>
-		</fast_rgb>
-	</output_image>
+    <!-- Individual RGB channels -->
+    <evaluate id="Red">
+      <fastmono wl_min="RedMin" wl_max="RedMax" normalize="Normalize"/>
+    </evaluate>
+    <evaluate id="Green">
+      <fastmono wl_min="GreenMin" wl_max="GreenMax" normalize="Normalize"/>
+    </evaluate>
+    <evaluate id="Blue">
+      <fastmono wl_min="BlueMin" wl_max="BlueMax" normalize="Normalize"/>
+    </evaluate>
+
+    <R>
+      <variable ref="Red"/>
+    </R>
+    <G>
+      <variable ref="Green"/>
+    </G>
+    <B>
+      <variable ref="Blue"/>
+    </B>
 	
   </configuration>
 </userplugin>
