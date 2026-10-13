@@ -86,4 +86,4 @@ Convert/Export to different File Formats
 Record a video using the Worker
 
 ### 06. Example_6_Reference_Spectra
-Correct reflectance with a white target spectrum & replace the White reference with a white spectrum (requires Cuvis 3.6)
+Working with target & white reference spectra
