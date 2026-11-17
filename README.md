@@ -84,3 +84,6 @@ Convert/Export to different File Formats
 
 ### 05. Example_5_Record_Video
 Record a video using the Worker
+
+### 06. Example_6_Reference_Spectra
+Working with target & white reference spectra

@@ -1,4 +1,4 @@
-cuvis
+cuvis>=3.6.1
 matplotlib
 notebook
 ipympl
